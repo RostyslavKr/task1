@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <title>Task 1</title>
+  </head>
+  <body>
+    <table data-table-notes>
+      <tr>
+        <th>Name</th>
+        <th>Created</th>
+        <th>Category</th>
+        <th>Content</th>
+        <th>Dates</th>
+        <th>
+          <svg width="18px" height="18px">
+            <use href="./images/sprite.svg#icon-box-add"></use>
+          </svg>
+          <svg width="18px" height="18px">
+            <use href="./images/sprite.svg#icon-bin2"></use>
+          </svg>
+        </th>
+      </tr>
+    </table>
+    <button data-open-modal>Create Note</button>
+    <table data-table-summary-notes></table>
+    <div class="backdrop is-hidden" data-modal>
+      <div>
+        <button data-close-modal>close</button>
+        <div class="modal-content">
+          <form class="js-form-note">
+            <input type="text" name="name" />
+            <select name="category" required>
+              <option value="Task">Task</option>
+              <option value="Random Thought">Random Thought</option>
+              <option value="Idea">Idea</option>
+            </select>
+            <input type="text" name="content" />
+            <button type="submit" class="create" data-btn-create-note>
+              Create Note
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./js/index.js"></script>
+  </body>
+</html>
