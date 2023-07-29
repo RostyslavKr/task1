@@ -37,6 +37,7 @@ function onFormSubmit(e) {
       archived: false,
     };
     notesItems.push(note);
+    renderTableHeader();
     renderNote(note);
     renderSummaryTable();
   }
@@ -65,48 +66,51 @@ function createDate() {
 }
 function renderNote(note) {
   const { id, name, created, category, content, dates } = note;
-  const markup = `<tr>
-        <td>${name}</td>
-        <td>${created}</td>
-        <td>${category}</td>
-        <td>${content}</td>
-        <td>${dates}</td>
-        <td data-key=${id}>
-        <button class="js-edit-note"><svg width="18px" height="18px">
+  const markup = `<li class="table-row">
+        <div>${name}</div>
+        <div>${created}</div>
+        <div>${category}</div>
+        <div>${content}</div>
+        <div>${dates}</div>
+        <div class="wrapper-btn" data-key=${id}>
+        <button class="btn-note edit-note js-edit-note"><svg width="18px" height="18px">
             <use href="./images/sprite.svg#icon-pencil"></use>
           </svg>
           </button>
-          <button class="js-archive-note"><svg width="18px" height="18px">
+          <button class="btn-note archive-note js-archive-note"><svg width="18px" height="18px">
             <use href="./images/sprite.svg#icon-box-add"></use>
           </svg>
           </button>
-          <button class="js-delete-note">
+          <button class="btn-note delete-note js-delete-note">
           <svg  width="18px" height="18px">
             <use href="./images/sprite.svg#icon-bin2"></use>
           </svg>
           </button>
-          </td>
-      </tr>`;
+          </div>
+      </li>`;
   refs.notesTable.insertAdjacentHTML("beforeend", markup);
   toggleModal();
 }
 
 function renderTableHeader() {
-  const markup = `<tr>
-        <th>Name</th>
-        <th>Created</th>
-        <th>Category</th>
-        <th>Content</th>
-        <th>Dates</th>
-        <th>
+  const markup = `<li class="table-header">
+        <div>Name</div>
+        <div>Created</div>
+        <div>Category</div>
+        <div>Content</div>
+        <div>Dates</div>
+        <div>
+        <svg width="18px" height="18px">
+            <use href="./images/sprite.svg#icon-pencil"></use>
+          </svg>
           <svg width="18px" height="18px">
             <use href="./images/sprite.svg#icon-box-add"></use>
           </svg>
           <svg width="18px" height="18px">
             <use href="./images/sprite.svg#icon-bin2"></use>
           </svg>
-        </th>
-      </tr>`;
+        </div>
+      </li>`;
   return (refs.notesTable.innerHTML = markup);
 }
 function onNotesTable(e) {
@@ -187,28 +191,28 @@ function renderNotesAfterChanged(notes) {
   const markup = notes
     .filter((note) => note.archived !== true)
     .map(({ id, name, created, category, content, dates }) => {
-      return `<tr>
-        <td>${name}</td>
-        <td>${created}</td>
-        <td>${category}</td>
-        <td>${content}</td>
-        <td>${dates}</td>
-        <td data-key=${id}>
-        <button class="js-edit-note"><svg width="18px" height="18px">
+      return `<li class="table-row">
+        <div>${name}</div>
+        <div>${created}</div>
+        <div>${category}</div>
+        <div>${content}</div>
+        <div>${dates}</div>
+        <div class="wrapper-btn" data-key=${id}>
+        <button class="btn-note edit-note js-edit-note"><svg width="18px" height="18px">
             <use href="./images/sprite.svg#icon-pencil"></use>
           </svg>
           </button>
-          <button class="js-archive-note"><svg width="18px" height="18px">
+          <button class="btn-note archive-note js-archive-note"><svg width="18px" height="18px">
             <use href="./images/sprite.svg#icon-box-add"></use>
           </svg>
           </button>
-          <button class="js-delete-note">
+          <button class="btn-note delete-note js-delete-note">
           <svg  width="18px" height="18px">
             <use href="./images/sprite.svg#icon-bin2"></use>
           </svg>
           </button>
-          </td>
-      </tr>`;
+          </div>
+      </li>`;
     })
     .join("");
   return refs.notesTable.insertAdjacentHTML("beforeend", markup);
@@ -219,15 +223,17 @@ function formEditNote(note) {
 
   const markup = `
   
-  <form id="${id}" class="js-form-edit-note">
-          <input type="text" name="name" value="${name}" />
-          <select name="category" value="${category}" required>
-            <option value="Task">Task</option>
-            <option value="Random Thought">Random Thought</option>
-            <option value="Idea">Idea</option>
-          </select>
-          <input type="text" name="content" value="${content}" />
-          <button   class="edit" data-btn-edit-note>Create Note</button>
+  <form id="${id}" class="form js-form-edit-note">
+          <label for="name">Name<input id="name" type="text" name="name" value="${name}" /></label>
+            
+            <label for="category">Category<select id="category" name="category" value="${category}" required>
+              <option value="Task">Task</option>
+              <option value="Random Thought">Random Thought</option>
+              <option value="Idea">Idea</option>
+            </select></label>
+            
+            <label for="content">Content<input id="content" type="text" name="content" value="${content}" /></label>
+          <button   class="create-note" data-btn-edit-note>Create Note</button>
         </form>
         `;
   refs.modalContent.innerHTML = markup;
@@ -235,15 +241,18 @@ function formEditNote(note) {
   toggleModal();
 }
 function formCreateNote() {
-  const markup = `<form class="js-form-note">
-            <input type="text" name="name" />
-            <select name="category" required>
+  const markup = `<form class="form js-form-note">
+            <label for="name">Name<input id="name" type="text" name="name" /></label>
+            
+            <label for="category">Category<select id="category" name="category" required>
               <option value="Task">Task</option>
               <option value="Random Thought">Random Thought</option>
               <option value="Idea">Idea</option>
-            </select>
-            <input type="text" name="content" />
-            <button type="submit" class="create" data-btn-create-note>
+            </select></label>
+            
+            <label for="content">Content<input id="content" type="text" name="content" /></label>
+            
+            <button type="submit" class="create-note" data-btn-create-note>
               Create Note
             </button>
           </form>`;
@@ -252,11 +261,11 @@ function formCreateNote() {
 function renderSummaryTable() {
   const categories = ["Task", "Random Thought", "Idea"];
   refs.summaryNotesTable.innerHTML = `
-    <tr>
-      <th>Category</th>
-      <th>Active</th>
-      <th>Archived</th>
-    </tr>
+    <li class="table-header">
+      <div>Category</div>
+      <div>Active</div>
+      <div>Archived</div>
+    </li>
     ${categories.map(renderSummaryRow).join("")}
   `;
 }
@@ -273,12 +282,15 @@ function renderSummaryRow(category) {
     return;
   }
   return `
-    <tr>
-      <td>${category}</td>
-      <td>${activeCount}</td>
-      <td>${archivedCount} </td>
-      ${renderUnarchiveButton(archivedCount, category)}
-    </tr>
+    <li class="table-row">
+      <div>${category}</div>
+      <div>${activeCount}</div>
+      <div>${archivedCount} ${renderUnarchiveButton(
+    archivedCount,
+    category
+  )} </div>
+      
+    </li>
   `;
 }
 
@@ -287,10 +299,10 @@ function renderUnarchiveButton(archivedCount, category) {
     return "";
   }
 
-  const markup = `<td data-key="${category}"><button  class="js-unarchive-modal-note" ><svg width="18px" height="18px">
+  const markup = `<span data-key="${category}"><button class="btn-note unarchive-note js-unarchive-modal-note" ><svg width="18px" height="18px">
             <use href="./images/sprite.svg#icon-box-remove"></use>
           </svg>
-          </button></td>`;
+          </button></span>`;
 
   return markup;
 }
@@ -313,41 +325,41 @@ function renderListArchivedNote(category) {
   const archivedNotes = notesItems.filter(
     (note) => note.category === category && note.archived
   );
-  const markup = `<table data-table-archived-notes>
-      <tr>
-        <th>Name</th>
-        <th>Created</th>
-        <th>Category</th>
-        <th>Content</th>
-        <th>Dates</th>
-        <th>
+  const markup = `<ul data-table-archived-notes>
+      <li class="table-header">
+        <div>Name</div>
+        <div>Created</div>
+        <div>Category</div>
+        <div>Content</div>
+        <div>Dates</div>
+        <div>
           <svg width="18px" height="18px">
             <use href="./images/sprite.svg#icon-box-remove"></use>
           </svg>
-        </th>
-      </tr>
+        </div>
+      </li>
       ${archivedNotes.map(renderArchivedRow).join("")}
-    </table>`;
+    </ul>`;
 
   return (refs.modalContent.innerHTML = markup);
 }
 
 function renderArchivedRow(note) {
-  const { id, name, created, category, content } = note;
-  return `<tr >
-            <td>${name}</td>
-            <td>${created}</td>
-            <td>${category}</td>
-            <td>${content}</td>
-            <td></td>
-            <td data-key=${id}>
-              <button class="js-unarchive-note">
+  const { id, name, created, category, content, dates } = note;
+  return `<li class="table-row">
+            <div>${name}</div>
+            <div>${created}</div>
+            <div>${category}</div>
+            <div>${content}</div>
+            <div>${dates}</div>
+            <div data-key=${id}>
+              <button class="btn-note unarchive-note js-unarchive-note">
                 <svg width="18px" height="18px">
                   <use href="./images/sprite.svg#icon-box-remove"></use>
                 </svg>
               </button>
-            </td>
-          </tr>`;
+            </div>
+          </li>`;
 }
 function archiveNote(id) {
   const noteIndex = notesItems.findIndex((note) => note.id === Number(id));
