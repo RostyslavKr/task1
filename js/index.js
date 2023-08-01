@@ -109,7 +109,7 @@ function onFormSubmit(e) {
     const {
       elements: { name, content, category },
     } = e.currentTarget;
-    if (!name.value || !created.value || !content.value || !category.value) {
+    if (!name.value || !content.value || !category.value) {
       alert("Please fill in all fields before creating a note.");
       return;
     }
